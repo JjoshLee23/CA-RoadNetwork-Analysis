@@ -6,8 +6,9 @@ use std::fs::File;
 use std::io::prelude::*;
 fn main() {
     
-    let  vector_of_nodes=read_file("Seoul_Edgelist.csv");
-    print!("{:?}",vector_of_nodes);
+    let  mut vector_of_nodes=read_file("roadNet-CA (1).txt");
+    //print!("{:?}",vector_of_nodes);
+    vector_of_nodes.display_graph();
 
     
     
@@ -17,23 +18,28 @@ fn read_file(path: &str) -> Graph {
     let mut buf_reader = std::io::BufReader::new(file).lines();
     for _i in 0..1{
          buf_reader.next().expect("File is empty").unwrap();
+         buf_reader.next().expect("File is empty").unwrap();
+         buf_reader.next().expect("File is empty").unwrap();
+         buf_reader.next().expect("File is empty").unwrap();
 
     }
     let mut graph=Graph::new_graph();
     let mut i=0;
     for line in buf_reader {
         let line_str = line.expect("Error reading");
-        let v: Vec<&str> = line_str.trim().split(',').collect();
-        let x = v[2].parse::<i32>().unwrap();
-        let y = v[3].parse::<i32>().unwrap();
+        let v: Vec<&str> = line_str.trim().split_whitespace().collect();
+        let x = v[0].parse::<i32>().unwrap();
+        let y = v[1].parse::<i32>().unwrap();
         i=i+1;
-        if i>1000{
+        if i>2000{
             break;
         }
        
         graph.add_nodes(x as i32);
+        graph.add_nodes(y as i32);
 
         graph.add_edge(y as i32,x);
+        graph.add_edge(x as i32,y);
      }
      graph
        

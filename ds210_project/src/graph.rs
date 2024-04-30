@@ -1,7 +1,7 @@
 #[derive(Debug)]
 
 pub struct Graph{
-    pub node:Vec<i32>,
+    pub nodes:Vec<i32>,
     pub edge: Vec<Vec<i32>>,
 
 }
@@ -9,20 +9,20 @@ pub struct Graph{
 impl Graph{
     pub fn new_graph()->Self{
         Self{
-            node:Vec::new(),
+            nodes:Vec::new(),
             edge:Vec::new(),
         }
 
     }
     pub fn add_nodes(&mut self,point:i32){
         let mut count=0;
-        for i in 0..self.node.len(){
-            if self.node.get(i).unwrap()==&point{
+        for i in 0..self.nodes.len(){
+            if self.nodes.get(i).unwrap()==&point{
                 count=count+1;
             }
         }
         if count==0{
-            self.node.push(point);
+            self.nodes.push(point);
             self.edge.push(vec![]);
         }
     }
@@ -40,16 +40,16 @@ impl Graph{
     }
     pub fn get_index(&mut self, value:i32)->i32{
         let mut index: i32=-1;
-        for i in 0..self.node.len(){
-            if self.node.get(i).unwrap()==&value{
+        for i in 0..self.nodes.len(){
+            if self.nodes.get(i).unwrap()==&value{
                 index=i as i32
             }
         }
         index
     }
-    pub fn print_graph(&self){
-        for i in 0..self.node.len(){
-            print!("Node {:?} Edges: {:?}",self.node[i],self.edge[i]);
+    pub fn display_graph(&mut self){
+        for i in 0..self.nodes.len(){
+            println!("Node: {:?}   Edges: {:?}",self.nodes[i],self.edge[i]);
         }
     }
 }
