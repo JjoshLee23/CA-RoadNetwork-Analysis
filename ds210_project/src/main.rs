@@ -1,14 +1,19 @@
 mod graph;
 use crate::graph::Graph;
 
+mod path;
+use crate::path::Path;
 
 use std::fs::File;
 use std::io::prelude::*;
 fn main() {
     
     let  mut vector_of_nodes=read_file("roadNet-CA (1).txt");
-    //print!("{:?}",vector_of_nodes);
     vector_of_nodes.display_graph();
+    print!("{:?}",vector_of_nodes.edge[1].iter());
+    let path=Path::initialization(vector_of_nodes);
+   // print!("{:?}",path.calculate_distance(1));
+
 
     
     

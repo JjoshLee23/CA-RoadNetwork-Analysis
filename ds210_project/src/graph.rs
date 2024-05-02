@@ -40,8 +40,8 @@ impl Graph{
     }
     pub fn get_index(&mut self, value:i32)->i32{
         let mut index: i32=-1;
-        for i in 0..self.nodes.len(){
-            if self.nodes.get(i).unwrap()==&value{
+        for i in 0..self.num_nodes(){
+            if self.nodes.get(i as usize).unwrap()==&value{
                 index=i as i32
             }
         }
@@ -49,7 +49,10 @@ impl Graph{
     }
     pub fn display_graph(&mut self){
         for i in 0..self.nodes.len(){
-            println!("Node: {:?}   Edges: {:?}",self.nodes[i],self.edge[i]);
+            println!("Node: {:5?}   Edges: {:?}",self.nodes[i],self.edge[i]);
         }
+    }
+    pub fn num_nodes(&mut self)->i32{
+        return self.nodes.len().try_into().unwrap();
     }
 }
