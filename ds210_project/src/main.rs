@@ -5,16 +5,64 @@ mod path;
 use crate::path::Path;
 
 use std::fs::File;
-use std::io::prelude::*;
 
 use rand::seq::SliceRandom;
+use std::io::{BufRead};
+use std::io;
 fn main() {
     
     let  mut vector_of_nodes=read_file("roadNet-CA (1).txt");
-    //vector_of_nodes.display_graph();
-    //print!("{:?}",vector_of_nodes.num_nodes());
-    //vector_of_nodes.nodes.sort();
-    let mut path=Path::initialization(vector_of_nodes);
+    let path=Path::initialization(vector_of_nodes.clone());
+    loop{
+        println!("1. Graph output\n2. Find Shortest Path for 2 Roads\n3. Find route\n4. End\nselect");
+        let mut select = String::new();
+        io::stdin().read_line(&mut select).expect("Fail to read line");
+        let result: Result<i64, _> = select.trim().parse();
+        match result {
+            Ok(number) => {
+                if number == 1{
+                    vector_of_nodes.display_graph();
+                }else if number == 2{
+                    two_nodes(path.clone());
+                }
+               // }else if number == 3{
+                    //select_three(paths.clone());
+                else if number==4{
+                    println!("—————Program End—————");
+                    return;
+                }
+            }Err(e) => {
+                println!("Error: {}", e);
+            }
+        }
+
+    }
+   fn two_nodes(mut path:Path){
+    println!("Enter the start node: ");
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to read line");
+    let number1: usize = input.trim().parse().expect("Please enter a valid number");
+    println!("Enter the end node: ");
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to read line");
+    let number2: usize = input.trim().parse().expect("Please enter a valid number");
+    let distance=path.calculate_distance(number1);
+    let mut count=0;
+    for i in 0..distance.len(){
+        if i==number2 && distance[i]!=None {
+            println!("The shortest distance from {:?} to {:?} is: {:?}",number1, number2,distance[i].unwrap());
+        }
+        else{
+            count=count+1;
+        }
+
+    }
+    if count==distance.len(){
+        println!("There is no pathway from {:?} to {:?} ",number1,number2);
+    }
+
+
+   } 
 
 
     
@@ -47,8 +95,8 @@ fn read_file(path: &str) -> Graph {
         graph.add_edge(y as usize, x);
         graph.add_edge(x as usize, y);
 
-        if i >= 1000 {
-            break;
+       if i >= 100 {
+           break;
         }
     }
     graph

@@ -55,7 +55,21 @@ impl Graph{
     pub fn num_nodes(&mut self)->i32{
         return self.nodes.len().try_into().unwrap();
     }
-    pub fn max_node(&self) -> Option<i32> {
+    pub fn max_node(&mut self) -> Option<i32> {
             self.nodes.iter().cloned().max()
         }
+    pub fn get_nodes(&mut self)->Vec<i32>{
+        let cloned_nodes=self.nodes.clone();
+        return cloned_nodes
+    }
+    pub fn get_numbered_nodes(&mut self)->Vec<usize>{
+        let mut numbered_nodes=vec![0;(self.max_node().unwrap()+1)as usize];
+        let sorted_nodes={let mut sorted =self.nodes.clone();
+        sorted.sort();
+        sorted};
+        for &i  in sorted_nodes.iter(){
+            numbered_nodes[i as usize]=i as usize;
+          }
+        numbered_nodes
+    }
 }
