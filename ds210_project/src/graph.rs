@@ -1,8 +1,8 @@
 #[derive(Debug)]
-
+#[derive(Clone)]
 pub struct Graph{
     pub nodes:Vec<i32>,
-    pub edge: Vec<Vec<i32>>,
+    pub edge: Vec<Vec<usize>>,
 
 }
 
@@ -26,7 +26,7 @@ impl Graph{
             self.edge.push(vec![]);
         }
     }
-    pub fn add_edge(&mut self, edge:i32,point:i32){
+    pub fn add_edge(&mut self, edge:usize,point:i32){
         let mut count1=0;
         let index:i32=self.get_index(point);
         for j in 0..self.edge.get(index as usize).unwrap().len(){
@@ -49,10 +49,13 @@ impl Graph{
     }
     pub fn display_graph(&mut self){
         for i in 0..self.nodes.len(){
-            println!("Node: {:5?}   Edges: {:?}",self.nodes[i],self.edge[i]);
+            println!("Node: {:7?}   Edges: {:?}",self.nodes[i],self.edge[i]);
         }
     }
     pub fn num_nodes(&mut self)->i32{
         return self.nodes.len().try_into().unwrap();
     }
+    pub fn max_node(&self) -> Option<i32> {
+            self.nodes.iter().cloned().max()
+        }
 }
