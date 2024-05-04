@@ -38,7 +38,7 @@ impl Graph{
             self.edge[index as usize].push(edge);
         }
     }
-    pub fn get_index(&mut self, value:i32)->i32{
+    pub fn get_index(&self, value:i32)->i32{
         let mut index: i32=-1;
         for i in 0..self.num_nodes(){
             if self.nodes.get(i as usize).unwrap()==&value{
@@ -47,29 +47,42 @@ impl Graph{
         }
         index
     }
+    pub fn get_sorted_index(&self, value:i32)->i32{
+        let mut sorted_index:i32=-1;
+        let mut sorted_nodes=self.nodes.clone();
+        sorted_nodes.sort();
+        for i in 0..sorted_nodes.len(){
+            if sorted_nodes[i]==value{
+                sorted_index=i as i32
+            }
+        }
+        sorted_index
+    }
     pub fn display_graph(&mut self){
         for i in 0..self.nodes.len(){
             println!("Node: {:7?}   Edges: {:?}",self.nodes[i],self.edge[i]);
         }
     }
-    pub fn num_nodes(&mut self)->i32{
+    pub fn num_nodes(&self)->i32{
         return self.nodes.len().try_into().unwrap();
     }
-    pub fn max_node(&mut self) -> Option<i32> {
-            self.nodes.iter().cloned().max()
+    pub fn sort_edges(&mut self)->Vec<Vec<usize>>{
+        let unsorted_nodes=self.nodes.clone();
+        let mut sorted_nodes=self.nodes.clone();
+        sorted_nodes.sort();
+        let mut new_edges:Vec<Vec<usize>>=vec![vec![];self.nodes.len()];
+        for &i in unsorted_nodes.iter(){
+            let index=self.get_index(i);
+            for &j in sorted_nodes.iter(){
+                if i==j{
+                    let new_index=self.get_sorted_index(j);
+                    new_edges[new_index as usize]=self.edge[index as usize].clone();
+                }
+
+            }
         }
-    pub fn get_nodes(&mut self)->Vec<i32>{
-        let cloned_nodes=self.nodes.clone();
-        return cloned_nodes
+        new_edges
+
     }
-    pub fn get_numbered_nodes(&mut self)->Vec<usize>{
-        let mut numbered_nodes=vec![0;(self.max_node().unwrap()+1)as usize];
-        let sorted_nodes={let mut sorted =self.nodes.clone();
-        sorted.sort();
-        sorted};
-        for &i  in sorted_nodes.iter(){
-            numbered_nodes[i as usize]=i as usize;
-          }
-        numbered_nodes
-    }
+
 }
