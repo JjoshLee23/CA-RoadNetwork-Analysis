@@ -17,7 +17,7 @@ fn main() {
     
     let mut path=Path::initialization(vector_of_nodes.clone());
     loop{
-        println!("1. Graph output\n2. Find Shortest Path for 2 Roads\n3. Find Edges For Node\n4. End\nselect");
+        println!("1. Display of Roads and their Paths\n2. Find Shortest Path for 2 Roads\n3. Find Roads For Node\n4. Exit\nselect");
         let mut select = String::new();
         io::stdin().read_line(&mut select).expect("Fail to read line");
         let result: Result<i64, _> = select.trim().parse();
@@ -32,7 +32,7 @@ fn main() {
                     display_edge(&mut vector_of_nodes)
                }
                 else if number==4{
-                    println!("—————End of Program—————");
+                    println!("------Thanks for checking out CA Roads!!------");
                     return;
                 }
             }Err(e) => {
@@ -43,6 +43,8 @@ fn main() {
 
     }
    fn two_nodes(path:&mut Path,graph:&mut Graph){
+    let mut sorted_nodes=graph.nodes.clone();
+    sorted_nodes.sort();
     println!("Enter the start node: ");
     let mut input1 = String::new();
     io::stdin().read_line(&mut input1).expect("Failed to read line");
@@ -56,7 +58,7 @@ fn main() {
     for i in 0..distance.len(){
         if distance[i]!=None && graph.get_sorted_index(number2 as i32) as usize==i{
             println!("The shortest distance from {:?} to {:?} is: {:?}",number1, number2,distance[i].unwrap());
-            println!("The path you take is {:?} ",path.get_middle_edges(number1,number2));
+            //println!("The path you take is {:?} ",path.get_middle_edges(number1,number2));
             t_or_f=true;
             break;
         }

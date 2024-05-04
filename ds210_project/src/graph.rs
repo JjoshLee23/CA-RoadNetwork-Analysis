@@ -82,7 +82,6 @@ impl Graph{
             }
         }
         new_edges
-
     }
 
 }
