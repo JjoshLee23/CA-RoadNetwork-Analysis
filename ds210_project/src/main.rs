@@ -12,17 +12,20 @@ use rand::seq::SliceRandom;
 use std::io::BufRead;
 use std::io;
 fn main() {
+    let mut vector_of_nodes=read_file("roadNet-CA (1).txt");//creates an instance of the graph
     
-    let mut vector_of_nodes=read_file("roadNet-CA (1).txt");
+    let mut path=Path::initialization(vector_of_nodes.clone());//creates an instance of my path struct by cloning my instance of graph.
     
-    let mut path=Path::initialization(vector_of_nodes.clone());
     loop{
+        //this loop is for my user input (either 1,2,3,4,5). If the user inputs 5 the program will terminate.
         println!("1. Display of Roads and their Paths\n2. Find Shortest Path for 2 Roads\n3. Find Roads For Node\n4. Find max distance a road has\n5. Exit\nselect");
+        //this code is for user input
         let mut select = String::new();
         io::stdin().read_line(&mut select).expect("Fail to read line");
         let result: Result<i64, _> = select.trim().parse();
-        match result {
-            Ok(number) => {
+        match result {//I use a match function to see which one of the user input corresponds to the number.
+            Ok(number) => {//if it is a valid user input, it uses if statement
+                //each if statement corresponds to a function that displays the graph, calculates the shortest distance or max distance.
                 if number == 1{
                     vector_of_nodes.display_graph();
                 }else if number == 2{
@@ -43,6 +46,7 @@ fn main() {
                     println!("------Thanks for checking out CA Roads!!------");
                     return;
                 }
+                //prints an error if the input is invalid
             }Err(e) => {
                 println!("Error: {}", e);
             }
@@ -50,6 +54,7 @@ fn main() {
         }
 
     }
+    //my function for outputting the shortest distance between 2 nodes
    fn two_nodes(path:&mut Path,graph:&mut Graph){
     let mut sorted_nodes=graph.nodes.clone();
     sorted_nodes.sort();
@@ -63,7 +68,7 @@ fn main() {
     let number2: usize = input2.trim().parse().expect("Please enter a valid number");
     let distance=path.calculate_distance(number1);
     let mut t_or_f=false;
-    for i in 0..distance.len(){
+    for i in 0..distance.len(){//checks if the number inputted matches any of the nodes.
         if distance[i]!=None && graph.get_sorted_index(number2 as i32) as usize==i{
             println!("The shortest distance from {:?} to {:?} is: {:?}",number1, number2,distance[i].unwrap());
             t_or_f=true;
@@ -78,13 +83,14 @@ fn main() {
     }
 
 } 
+//my function for displaying the graph in general (nodes and the corresponding edges)
     fn display_edge(graph:&mut Graph){
     println!("Enter the start node: ");
     let mut _valid=false;
     let mut input1 = String::new();
     io::stdin().read_line(&mut input1).expect("Failed to read line");
     let mut node1: i32 = input1.trim().parse().expect("Please enter a valid number");
-    if graph.get_index(node1)!=-1 {
+    if graph.get_index(node1)!=-1 {//checks if the node inputted is valid
         _valid=true;
     }
     else{
@@ -111,6 +117,7 @@ fn main() {
    }
 
 
+//this function reads the file and creates a graph instance
 fn read_file(path: &str) -> Graph {
     let file = File::open(path).expect("Could not open file");
     let mut buf_reader = std::io::BufReader::new(file).lines();
@@ -138,11 +145,49 @@ fn read_file(path: &str) -> Graph {
         graph.add_edge(y as usize, x);
         graph.add_edge(x as usize, y);
 
-       if i >= 100 {
+        //takes the first 100,000 nodes
+       if i >= 1000 {
            break;
         }
     }
     graph
 }
+
+#[cfg(test)]
+
+mod tests{
+    use super::*;
+
+     #[test]
+      fn correct_graph(){//tests if the graph adds the correct edges to the nodes
+          let mut graph=Graph::new_graph();
+          graph.add_nodes(1);
+          graph.add_nodes(2);
+          graph.add_nodes(3);
+          graph.add_nodes(4);
+          graph.add_edge(10,1);
+          graph.add_edge(9,1);
+          graph.add_edge(5,2);
+          graph.add_edge(6,3);
+          assert_eq!(graph.edge[0],vec![10,9]);
+          assert_eq!(graph.edge[1],vec![5]);
+          assert_eq!(graph.edge[2],vec![6]);
+          assert_eq!(graph.edge[3],vec![]);
+          assert_eq!(graph.nodes,vec![1,2,3,4]);
+
+      }
+     #[test]
+     fn shortest_distance(){
+        let graph1=read_file("data.txt");
+        let mut path=Path::initialization(graph1);
+        let distance=path.calculate_distance(1);
+        assert_eq!(distance[5].unwrap(),1);
+        assert_eq!(distance[1].unwrap(),0);
+        assert_eq!(distance[0].unwrap(),1);
+        assert_eq!(distance[3].unwrap(),3);
+
+     }
+
+ }
        
 

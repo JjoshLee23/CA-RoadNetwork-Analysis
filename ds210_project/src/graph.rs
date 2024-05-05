@@ -1,6 +1,6 @@
 #[derive(Debug)]
 #[derive(Clone)]
-pub struct Graph{
+pub struct Graph{//created a struct "Graph" that has 2 vectors for nodes and corresponding edges
     pub nodes:Vec<i32>,
     pub edge: Vec<Vec<usize>>,
 
@@ -13,7 +13,7 @@ impl Graph{
         }
 
     }
-    pub fn add_nodes(&mut self,point:i32){
+    pub fn add_nodes(&mut self,point:i32){//add node function which adds nodes to the vector
         let mut count=0;
         for i in 0..self.nodes.len(){
             if self.nodes.get(i).unwrap()==&point{
@@ -25,7 +25,7 @@ impl Graph{
             self.edge.push(vec![]);
         }
     }
-    pub fn add_edge(&mut self, edge:usize,point:i32){
+    pub fn add_edge(&mut self, edge:usize,point:i32){//add edge function which add edges to the vector 
         let mut count1=0;
         let index:i32=self.get_index(point);
         for j in 0..self.edge.get(index as usize).unwrap().len(){
@@ -37,7 +37,7 @@ impl Graph{
             self.edge[index as usize].push(edge);
         }
     }
-    pub fn get_index(&self, value:i32)->i32{
+    pub fn get_index(&self, value:i32)->i32{//function where I get the index of the unsorted nodes
         let mut index: i32=-1;
         for i in 0..self.num_nodes(){
             if self.nodes.get(i as usize).unwrap()==&value{
@@ -46,7 +46,7 @@ impl Graph{
         }
         index
     }
-    pub fn get_sorted_index(&self, value:i32)->i32{
+    pub fn get_sorted_index(&self, value:i32)->i32{//sorts the nodes by cloning the original nodes and find the index value
         let mut sorted_index:i32=-1;
         let mut sorted_nodes=self.nodes.clone();
         sorted_nodes.sort();
@@ -57,15 +57,15 @@ impl Graph{
         }
         sorted_index
     }
-    pub fn display_graph(&mut self){
+    pub fn display_graph(&mut self){//used to display the entire graph
         for i in 0..self.nodes.len(){
             println!("Node: {:7?}   Edges: {:?}",self.nodes[i],self.edge[i]);
         }
     }
     pub fn num_nodes(&self)->i32{
-        return self.nodes.len().try_into().unwrap();
+        return self.nodes.len().try_into().unwrap();//gets the number of nodes
     }
-    pub fn sort_edges(&mut self)->Vec<Vec<usize>>{
+    pub fn sort_edges(&mut self)->Vec<Vec<usize>>{//function where it sorts the edges based on the sorted vector.
         let unsorted_nodes=self.nodes.clone();
         let mut sorted_nodes=self.nodes.clone();
         sorted_nodes.sort();
