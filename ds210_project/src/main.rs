@@ -146,7 +146,7 @@ fn read_file(path: &str) -> Graph {
         graph.add_edge(x as usize, y);
 
         //takes the first 100,000 nodes
-       if i >= 1000 {
+       if i >= 100000 {
            break;
         }
     }
