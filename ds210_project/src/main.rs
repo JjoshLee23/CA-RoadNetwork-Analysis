@@ -13,11 +13,11 @@ use std::io::BufRead;
 use std::io;
 fn main() {
     
-    let mut vector_of_nodes=read_file("data.txt");
+    let mut vector_of_nodes=read_file("roadNet-CA (1).txt");
     
     let mut path=Path::initialization(vector_of_nodes.clone());
     loop{
-        println!("1. Display of Roads and their Paths\n2. Find Shortest Path for 2 Roads\n3. Find Roads For Node\n4. Exit\nselect");
+        println!("1. Display of Roads and their Paths\n2. Find Shortest Path for 2 Roads\n3. Find Roads For Node\n4. Find max distance a road has\n5. Exit\nselect");
         let mut select = String::new();
         io::stdin().read_line(&mut select).expect("Fail to read line");
         let result: Result<i64, _> = select.trim().parse();
@@ -31,7 +31,15 @@ fn main() {
                else if number == 3{
                     display_edge(&mut vector_of_nodes)
                }
-                else if number==4{
+               else if number==4{
+                println!("Enter the start node: ");
+                let mut input1 = String::new();
+                io::stdin().read_line(&mut input1).expect("Failed to read line");
+                let node: usize = input1.trim().parse().expect("Please enter a valid number");
+                let max=path.maximum_distance_for_node(node);
+                println!("The maximum distance road {:?} has to any road is {:?} ",node,max);
+               }
+                else if number==5{
                     println!("------Thanks for checking out CA Roads!!------");
                     return;
                 }
@@ -58,23 +66,19 @@ fn main() {
     for i in 0..distance.len(){
         if distance[i]!=None && graph.get_sorted_index(number2 as i32) as usize==i{
             println!("The shortest distance from {:?} to {:?} is: {:?}",number1, number2,distance[i].unwrap());
-            //println!("The path you take is {:?} ",path.get_middle_edges(number1,number2));
             t_or_f=true;
             break;
         }
         else{
             t_or_f=false;
         }
-
     }
     if t_or_f==false{
         println!("There is no pathway from {:?} to {:?} ",number1,number2);
     }
 
-
-   } 
-
-   fn display_edge(graph:&mut Graph){
+} 
+    fn display_edge(graph:&mut Graph){
     println!("Enter the start node: ");
     let mut _valid=false;
     let mut input1 = String::new();

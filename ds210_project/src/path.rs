@@ -39,34 +39,16 @@ impl Path{
         distance
 
     }
-    pub fn get_middle_edges(&mut self, start_node:usize,end_node:usize)->Vec<(usize,usize)>{
-        let mut queue:VecDeque<usize>=VecDeque::new();
-        queue.push_back(start_node);
-        let new_edges_one=self.graph.sort_edges();
-        while let Some(existing_node)=queue.pop_front(){
-            if existing_node==end_node{
-                 break;
-             }
-             let index: i32=self.graph.get_sorted_index(existing_node as i32);
-             for &next_node in new_edges_one[index as usize].iter(){
-                //let next_node_index=self.graph.get_sorted_index(next_node as i32);
-                if !self.visited_nodes.contains_key(&(next_node as usize)){
-                     self.visited_nodes.insert(next_node as usize, existing_node);
-                     queue.push_back(next_node);
-                 }
-             }
-             break;
-         }
-         let mut path=Vec::new();
-         let mut current=end_node;
-         while let Some(&prev_node)=self.visited_nodes.get(&current){
-             path.push((prev_node,current));
-             current=prev_node;
-         }
-
-         path.reverse();
-
-         path
-
+    pub fn maximum_distance_for_node(&mut self, node:usize)->u32{
+        let distances=self.calculate_distance(node);
+        let mut max=0;
+        for i in distances.iter(){
+            if *i!=None{
+                if i.unwrap()>max{
+                    max=i.unwrap()
+                }
+            }
+        }
+        max
     }
 }

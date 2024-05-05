@@ -5,7 +5,6 @@ pub struct Graph{
     pub edge: Vec<Vec<usize>>,
 
 }
-
 impl Graph{
     pub fn new_graph()->Self{
         Self{
